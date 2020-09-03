@@ -96,4 +96,8 @@ button:hover {
 .todo.done h3 {
   text-decoration: line-through;
 }
+
+.todo.done {
+  opacity: 0.3;
+}
 </style>
