@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    todos: ["Clean Bathroom", "Make Breakfast"],
+    todos: [],
     singleTodo: null,
     alert: null
   },
@@ -44,10 +44,12 @@ export default new Vuex.Store({
         default:
           return;
       }
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         state.alert = null;
-        clearTimeout(timeout);
-      }, 5000);
+      }, 1000);
+    },
+    CLEAR_TODO: state => {
+      state.singleTodo = null;
     }
   },
   actions: {
@@ -76,6 +78,9 @@ export default new Vuex.Store({
     },
     setAlert: (context, payload) => {
       context.commit("SET_ALERT", payload);
+    },
+    clearTodo: ({ commit }) => {
+      commit("CLEAR_TODO");
     }
   },
   getters: {

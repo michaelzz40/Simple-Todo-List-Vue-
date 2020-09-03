@@ -1,5 +1,10 @@
 <template>
-  <div class="todo" v-if="!getSingleTodo">
+  <div
+    class="todo"
+    v-if="!getSingleTodo"
+    @click="done"
+    :class="{ done: isDone }"
+  >
     <h3>{{ todo }}</h3>
     <div>
       <button class="delete-btn" @click="deleteStuff">
@@ -16,6 +21,11 @@
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      isDone: false
+    };
+  },
   props: ["todo", "id"],
   computed: {
     ...mapGetters(["getSingleTodo"])
@@ -27,6 +37,9 @@ export default {
     },
     populateSingleTodo() {
       this.populateTodo({ todo: this.todo, id: this.id });
+    },
+    done() {
+      this.isDone = !this.isDone;
     }
   }
 };
@@ -61,10 +74,6 @@ button {
   outline: none;
 }
 
-.todo:hover + .todo {
-  transform: scale(1.05);
-}
-
 button:hover {
   color: rgba(255, 255, 255, 0.9);
   background: rgba(0, 0, 0, 0.7);
@@ -82,5 +91,9 @@ button:hover {
 }
 .todo:nth-child(4n + 4) {
   background-color: #b989e9;
+}
+
+.todo.done h3 {
+  text-decoration: line-through;
 }
 </style>

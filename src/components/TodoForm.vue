@@ -1,27 +1,30 @@
 <template>
-  <div class="form-group">
+  <div class="form-group" v-if="!getSingleTodo">
     <form @submit.prevent="submitForm">
-      <input type="text" v-model="todo" placeholder="Enter a new Todo List" />
+      <input type="text" v-model="text" placeholder="Enter a new Todo List" />
       <button type="submit">Submit</button>
     </form>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      todo: ""
+      text: ""
     };
   },
   methods: {
     ...mapActions(["addTodo"]),
     submitForm() {
-      this.$store.dispatch("addTodo", this.todo);
-      this.todo = "";
+      this.$store.dispatch("addTodo", this.text);
+      this.text = "";
     }
+  },
+  computed: {
+    ...mapGetters(["getSingleTodo"])
   }
 };
 </script>
