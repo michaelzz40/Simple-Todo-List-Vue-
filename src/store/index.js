@@ -11,9 +11,6 @@ export default new Vuex.Store({
   },
   mutations: {
     ADD_TODO: (state, payload) => {
-      if (!payload) {
-        return;
-      }
       state.todos.push(payload);
     },
     DELETE_TODO: (state, payload) => {
@@ -40,18 +37,27 @@ export default new Vuex.Store({
           state.alert = "SUCCESSFULLY ADDED";
           break;
         }
+        case "edit": {
+          state.alert = "YOU CANNOT UPDATE WITH SPACE";
+          break;
+        }
         default:
           return;
       }
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         state.alert = null;
-      }, 4000);
+        clearTimeout(timeout);
+      }, 5000);
     }
   },
   actions: {
     addTodo: (context, payload) => {
-      context.commit("ADD_TODO", payload);
-      context.commit("SET_ALERT", { alertType: "add" });
+      if (!payload) {
+        return;
+      } else {
+        context.commit("ADD_TODO", payload);
+        context.commit("SET_ALERT", { alertType: "add" });
+      }
     },
     deleteTodo: (context, payload) => {
       context.commit("DELETE_TODO", payload);
@@ -61,8 +67,12 @@ export default new Vuex.Store({
       context.commit("POPULATE_TODO", payload);
     },
     updateTodo: (context, payload) => {
-      context.commit("UPDATE_TODO", payload);
-      context.commit("SET_ALERT", { alertType: "update" });
+      if (!payload.todo) {
+        context.commit("SET_ALERT", { alertType: "edit" });
+      } else {
+        context.commit("UPDATE_TODO", payload);
+        context.commit("SET_ALERT", { alertType: "update" });
+      }
     },
     setAlert: (context, payload) => {
       context.commit("SET_ALERT", payload);
